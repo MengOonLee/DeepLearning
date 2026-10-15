@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts, amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\title{Reinforcement Learning}
+\author{Meng Oon Lee}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Discounted return at time step $t$:
+\begin{equation}
+G_t = \sum_{k=0} \gamma^k R_{t+k+1}, \quad \gamma \in [0, 1]
+\end{equation}
+
+One-step dynamics:
+\begin{align}
+p(s', r | s, a) &= \mathbb{P}(S_{t+1}=s', R_{t+1}=r | S_t=s, A_t=a), \\
+&\quad s, s' \in S, \quad a \in A, \quad r \in R \notag
+\end{align}
+
+Deterministic policy:
+\begin{equation}
+\pi : S \rightarrow A, \quad s \in S, \quad a \in A
+\end{equation}
+
+Stochastic policy:
+\begin{equation}
+\pi : S \times A \rightarrow \pi(a|s) \in [0, 1], \quad s \in S, \quad a \in A
+\end{equation}
+
+State-value function:
+\begin{equation}
+v_{\pi}(s) = \mathbb{E}_{\pi}[G_t | S_t=s], \quad s \in S
+\end{equation}
+
+Bellman expectation equation:
+\begin{equation}
+v_{\pi}(s) = \mathbb{E}_{\pi}[R_{t+1} + \gamma v_{\pi}(S_{t+1}) | S_t=s], 
+\quad s \in \mathcal{S}, \quad \gamma \in [0, 1]
+\end{equation}
+
+Action-value function:
+\begin{equation}
+q_{\pi}(s, a) = \mathbb{E}_{\pi}[G_t | S_t=s, A_t=a], 
+\quad s \in \mathcal{S}, \quad a \in \mathcal{A}
+\end{equation}
+
+Optimal policy:
+\begin{equation}
+\pi_*(s) = \argmax_{a \in A(s)} q_*(s, a), \quad s \in A(s)
+\end{equation}
+
+Temporal-difference (TD):
+\begin{enumerate}
+\item TD Prediction:
+    \begin{equation}
+    V(S_t) \leftarrow (1 - \alpha) V(S_t) + \alpha G_t
+    \end{equation}
+\item Sarsa (on-policy TD control):
+    \begin{equation}
+    Q(S_t, A_t) \leftarrow (1 - \alpha) Q(S_t, A_t) + 
+    \alpha [R_{t+1} + \gamma Q(S_{t+1}, A_{t+1})]
+    \end{equation}
+\item Q-learning (off-policy TD control):
+    \begin{align}
+    Q(S_t, A_t) &\leftarrow (1 - \alpha) Q(S_t, A_t) + 
+    \alpha [R_{t+1} + \gamma \max_{a} Q(S_{t+1}, a)], \\
+    &\quad a \in A(s) \notag
+    \end{align}
+\end{enumerate}
+
+\end{document}
